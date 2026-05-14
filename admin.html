@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Portfolio Admin — Bilali Saley Inusah</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --cream:#FAF0DC; --cream-dark:#F0E4C4;
+  --teal:#0B4141; --teal-mid:#0e5252; --teal-light:#145f5f;
+  --coral:#FF6864; --coral-dark:#e04f4c;
+  --amber:#D4820A;
+  --white:#fff;
+  --gray:#6b7a6b; --gray-light:#9aaa9a;
+  --border:rgba(11,65,65,0.15); --border-strong:rgba(11,65,65,0.25);
+  --card:#fff;
+  --shadow:0 4px 24px rgba(11,65,65,0.10);
+  --shadow-lg:0 12px 48px rgba(11,65,65,0.16);
+  --success:#2ecc71; --danger:#e74c3c; --warn:#f39c12;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--teal);min-height:100vh;}
+
+/* ── LOGIN ── */
+#login-screen{
+  position:fixed;inset:0;background:var(--teal);
+  display:flex;align-items:center;justify-content:center;
+  z-index:9999;
+}
+.login-box{
+  background:var(--cream);border-radius:24px;padding:3rem 2.5rem;
+  max-width:400px;width:90%;box-shadow:var(--shadow-lg);text-align:center;
+}
+.login-logo{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--teal);margin-bottom:0.3rem;}
+.login-logo span{color:var(--coral);}
+.login-subtitle{font-size:0.82rem;color:var(--gray);margin-bottom:2rem;font-family:'JetBrains Mono',monospace;}
+.login-box input{
+  width:100%;background:var(--cream-dark);border:1.5px solid var(--border-strong);
+  border-radius:10px;padding:0.85rem 1rem;font-size:0.9rem;
+  color:var(--teal);font-family:'DM Sans',sans-serif;outline:none;
+  margin-bottom:1rem;transition:border-color 0.2s;
+}
+.login-box input:focus{border-color:var(--coral);}
+.login-btn{
+  width:100%;background:var(--coral);color:#fff;border:none;
+  border-radius:50px;padding:0.9rem;font-weight:700;font-size:0.95rem;
+  cursor:pointer;transition:all 0.2s;
+}
+.login-btn:hover{background:var(--coral-dark);}
+.login-error{color:var(--coral);font-size:0.82rem;margin-top:0.75rem;display:none;}
+
+/* ── LAYOUT ── */
+#app{display:none;}
+.admin-layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  background:var(--teal);position:sticky;top:0;height:100vh;
+  overflow-y:auto;display:flex;flex-direction:column;
+}
+.sidebar-brand{
+  padding:1.8rem 1.5rem 1.2rem;
+  border-bottom:1px solid rgba(250,240,220,0.1);
+}
+.sidebar-brand .logo{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:900;color:var(--cream);}
+.sidebar-brand .logo span{color:var(--coral);}
+.sidebar-brand p{font-size:0.72rem;color:rgba(250,240,220,0.5);font-family:'JetBrains Mono',monospace;margin-top:0.2rem;}
+.sidebar-nav{padding:1rem 0;flex:1;}
+.nav-group-label{
+  font-size:0.62rem;font-weight:700;letter-spacing:0.12em;
+  text-transform:uppercase;color:rgba(250,240,220,0.4);
+  padding:0.8rem 1.5rem 0.4rem;font-family:'JetBrains Mono',monospace;
+}
+.nav-item{
+  display:flex;align-items:center;gap:0.75rem;
+  padding:0.7rem 1.5rem;cursor:pointer;
+  font-size:0.88rem;font-weight:500;color:rgba(250,240,220,0.7);
+  transition:all 0.2s;border-left:3px solid transparent;
+}
+.nav-item:hover{background:rgba(255,255,255,0.05);color:var(--cream);}
+.nav-item.active{background:rgba(255,104,100,0.12);color:var(--cream);border-left-color:var(--coral);}
+.nav-item .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0;}
+.sidebar-footer{
+  padding:1rem 1.5rem;border-top:1px solid rgba(250,240,220,0.1);
+}
+.logout-btn{
+  display:flex;align-items:center;gap:0.6rem;
+  font-size:0.82rem;color:rgba(250,240,220,0.5);cursor:pointer;
+  transition:color 0.2s;background:none;border:none;font-family:'DM Sans',sans-serif;
+}
+.logout-btn:hover{color:var(--coral);}
+
+/* ── MAIN ── */
+.main-content{padding:2rem 2.5rem;background:var(--cream);overflow-y:auto;}
+.page-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:gap;}
+.page-title{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:900;color:var(--teal);}
+.page-subtitle{font-size:0.85rem;color:var(--gray);margin-top:0.2rem;}
+
+/* ── DASHBOARD ── */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.2rem;margin-bottom:2rem;}
+.dash-stat{
+  background:var(--card);border:1.5px solid var(--border-strong);
+  border-radius:14px;padding:1.3rem;box-shadow:var(--shadow);
+}
+.dash-stat .ds-num{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--coral);}
+.dash-stat .ds-label{font-size:0.75rem;color:var(--gray);font-weight:600;margin-top:0.2rem;}
+.dash-stat .ds-icon{font-size:1.5rem;margin-bottom:0.5rem;}
+.recent-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.recent-card{background:var(--card);border:1.5px solid var(--border-strong);border-radius:14px;padding:1.5rem;box-shadow:var(--shadow);}
+.recent-card h3{font-size:0.88rem;font-weight:700;margin-bottom:1rem;color:var(--teal);display:flex;align-items:center;gap:0.5rem;}
+.recent-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.6rem 0;border-bottom:1px solid var(--border);font-size:0.83rem;
+}
+.recent-item:last-child{border-bottom:none;}
+.recent-item-name{font-weight:600;color:var(--teal);}
+.recent-item-meta{font-size:0.73rem;color:var(--gray);font-family:'JetBrains Mono',monospace;}
+
+/* ── TABS / SECTIONS ── */
+.admin-page{display:none;}
+.admin-page.active{display:block;}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:0.75rem;}
+.btn{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  padding:0.6rem 1.3rem;border-radius:50px;font-size:0.84rem;
+  font-weight:700;cursor:pointer;border:none;transition:all 0.2s;
+  font-family:'DM Sans',sans-serif;
+}
+.btn-coral{background:var(--coral);color:#fff;}
+.btn-coral:hover{background:var(--coral-dark);}
+.btn-teal{background:var(--teal);color:var(--cream);}
+.btn-teal:hover{background:var(--teal-mid);}
+.btn-outline{background:transparent;border:1.5px solid var(--border-strong);color:var(--teal);}
+.btn-outline:hover{border-color:var(--coral);color:var(--coral);}
+.btn-danger{background:var(--danger);color:#fff;}
+.btn-danger:hover{background:#c0392b;}
+.btn-sm{padding:0.4rem 0.85rem;font-size:0.76rem;}
+
+/* ── ITEMS LIST ── */
+.items-list{display:flex;flex-direction:column;gap:1rem;}
+.item-card{
+  background:var(--card);border:1.5px solid var(--border-strong);
+  border-radius:14px;padding:1.3rem 1.5rem;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:1rem;box-shadow:var(--shadow);transition:border-color 0.2s;
+}
+.item-card:hover{border-color:var(--coral);}
+.item-card-body{flex:1;min-width:0;}
+.item-card-title{font-size:0.95rem;font-weight:700;color:var(--teal);margin-bottom:0.2rem;}
+.item-card-meta{font-size:0.75rem;color:var(--coral);font-family:'JetBrains Mono',monospace;font-weight:600;margin-bottom:0.3rem;}
+.item-card-desc{font-size:0.82rem;color:var(--gray);line-height:1.55;}
+.item-card-tech{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.6rem;}
+.tag{background:rgba(11,65,65,0.07);color:var(--teal);padding:0.18rem 0.6rem;border-radius:6px;font-size:0.68rem;font-weight:600;font-family:'JetBrains Mono',monospace;border:1px solid var(--border-strong);}
+.item-actions{display:flex;gap:0.5rem;flex-shrink:0;}
+
+/* ── MODAL / FORM ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(11,65,65,0.6);z-index:5000;
+  align-items:flex-start;justify-content:center;
+  padding:1.5rem 1rem;overflow-y:auto;
+}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--cream);border:2px solid var(--border-strong);
+  border-radius:20px;max-width:680px;width:100%;
+  padding:2rem;position:relative;margin:auto;
+  box-shadow:var(--shadow-lg);
+}
+.modal-close{
+  position:absolute;top:1rem;right:1rem;
+  background:var(--coral);color:#fff;border:none;
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:0.85rem;cursor:pointer;
+}
+.modal h2{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:900;margin-bottom:1.5rem;color:var(--teal);padding-right:2rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.form-group{margin-bottom:1.1rem;}
+.form-group label{display:block;font-size:0.72rem;font-weight:700;margin-bottom:0.35rem;color:var(--teal);letter-spacing:0.07em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;background:var(--white);
+  border:1.5px solid var(--border-strong);border-radius:8px;
+  padding:0.78rem 0.9rem;color:var(--teal);
+  font-family:'DM Sans',sans-serif;font-size:0.88rem;
+  transition:border-color 0.2s;outline:none;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{border-color:var(--coral);}
+.form-group textarea{resize:vertical;min-height:90px;}
+.form-group select option{background:#fff;}
+.form-hint{font-size:0.72rem;color:var(--gray);margin-top:0.3rem;font-style:italic;}
+.form-actions{display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border);}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:2rem;right:2rem;
+  background:var(--teal);color:var(--cream);
+  padding:0.85rem 1.5rem;border-radius:12px;
+  font-size:0.85rem;font-weight:600;
+  box-shadow:var(--shadow-lg);z-index:9999;
+  transform:translateY(100px);opacity:0;
+  transition:all 0.3s;pointer-events:none;
+}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{border-left:4px solid var(--success);}
+.toast.error{border-left:4px solid var(--danger);}
+
+/* ── SEARCH ── */
+.search-box{
+  display:flex;align-items:center;gap:0.5rem;
+  background:var(--white);border:1.5px solid var(--border-strong);
+  border-radius:50px;padding:0.5rem 1rem;
+}
+.search-box input{border:none;outline:none;background:transparent;font-size:0.85rem;color:var(--teal);width:200px;font-family:'DM Sans',sans-serif;}
+.search-box span{color:var(--gray);font-size:0.9rem;}
+
+/* ── BADGE ── */
+.badge{display:inline-block;padding:0.2rem 0.65rem;border-radius:20px;font-size:0.65rem;font-weight:700;letter-spacing:0.07em;font-family:'JetBrains Mono',monospace;}
+.badge-coral{background:rgba(255,104,100,0.1);color:var(--coral);border:1px solid rgba(255,104,100,0.3);}
+.badge-teal{background:rgba(11,65,65,0.08);color:var(--teal);border:1px solid var(--border-strong);}
+.badge-amber{background:rgba(212,130,10,0.1);color:var(--amber);border:1px solid rgba(212,130,10,0.3);}
+.badge-green{background:rgba(46,204,113,0.1);color:#27ae60;border:1px solid rgba(46,204,113,0.3);}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:3rem;color:var(--gray);}
+.empty-state .es-icon{font-size:3rem;margin-bottom:1rem;}
+.empty-state p{font-size:0.9rem;}
+
+/* ── SETTINGS ── */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.settings-card{background:var(--card);border:1.5px solid var(--border-strong);border-radius:14px;padding:1.5rem;box-shadow:var(--shadow);}
+.settings-card h3{font-size:0.88rem;font-weight:700;margin-bottom:1.2rem;color:var(--teal);display:flex;align-items:center;gap:0.5rem;}
+.kpi-row{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.8rem;}
+.kpi-row input{flex:1;}
+.kpi-emoji{font-size:1.4rem;width:36px;text-align:center;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .admin-layout{grid-template-columns:1fr;}
+  .sidebar{position:fixed;left:-260px;width:260px;z-index:1000;transition:left 0.3s;height:100vh;}
+  .sidebar.open{left:0;}
+  .main-content{padding:1.2rem;}
+  .recent-grid{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+  .settings-grid{grid-template-columns:1fr;}
+  .mob-menu-btn{display:flex!important;}
+}
+.mob-menu-btn{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:1001;
+  background:var(--teal);color:var(--cream);border:none;
+  width:42px;height:42px;border-radius:10px;font-size:1.2rem;
+  cursor:pointer;align-items:center;justify-content:center;
+}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:999;}
+.mob-overlay.open{display:block;}
+
+/* ── IMAGE UPLOAD ── */
+.img-upload-area{
+  border:2px dashed var(--border-strong);border-radius:12px;
+  padding:1.2rem;text-align:center;cursor:pointer;
+  transition:border-color 0.2s,background 0.2s;
+  background:var(--white);position:relative;overflow:hidden;
+}
+.img-upload-area:hover{border-color:var(--coral);background:rgba(255,104,100,0.03);}
+.img-upload-area input[type=file]{
+  position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;
+}
+.img-upload-preview{
+  width:100%;height:140px;object-fit:cover;border-radius:8px;
+  display:none;margin-bottom:0.5rem;
+}
+.img-upload-preview.show{display:block;}
+.img-upload-label{font-size:0.82rem;color:var(--gray);pointer-events:none;}
+.img-upload-label span{display:block;font-size:1.5rem;margin-bottom:0.3rem;}
+.img-thumb{
+  width:60px;height:60px;border-radius:8px;object-fit:cover;
+  border:1.5px solid var(--border-strong);flex-shrink:0;
+  background:var(--cream-dark);display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;overflow:hidden;
+}
+.img-thumb img{width:100%;height:100%;object-fit:cover;}
+
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">BSI<span>.</span>Admin</div>
+    <p class="login-subtitle">Portfolio Content Manager</p>
+    <input type="text" id="login-user" placeholder="Username" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <input type="password" id="login-pass" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="login-btn" onclick="doLogin()">Sign In →</button>
+    <div class="login-error" id="login-error">❌ Incorrect credentials. Try again.</div>
+    <p style="font-size:0.72rem;color:var(--gray-light);margin-top:1.5rem">Default: admin / bilali2025</p>
+  </div>
+</div>
+
+<!-- MOBILE MENU BTN -->
+<button class="mob-menu-btn" id="mob-menu-btn" onclick="toggleSidebar()">☰</button>
+<div class="mob-overlay" id="mob-overlay" onclick="toggleSidebar()"></div>
+
+<!-- APP -->
+<div id="app">
+  <div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo">BSI<span>.</span>Admin</div>
+        <p>Portfolio Manager</p>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-group-label">Overview</div>
+        <div class="nav-item active" onclick="showSection('dashboard')"><span class="nav-icon">🏠</span> Dashboard</div>
+
+        <div class="nav-group-label">Content</div>
+        <div class="nav-item" onclick="showSection('projects')"><span class="nav-icon">📁</span> Projects</div>
+        <div class="nav-item" onclick="showSection('experience')"><span class="nav-icon">💼</span> Experience</div>
+        <div class="nav-item" onclick="showSection('blog')"><span class="nav-icon">✍️</span> Blog Posts</div>
+        <div class="nav-item" onclick="showSection('certifications')"><span class="nav-icon">🏅</span> Certifications</div>
+        <div class="nav-item" onclick="showSection('education')"><span class="nav-icon">🎓</span> Education</div>
+        <div class="nav-item" onclick="showSection('skills')"><span class="nav-icon">🛠️</span> Skills</div>
+
+        <div class="nav-group-label">Settings</div>
+        <div class="nav-item" onclick="showSection('kpis')"><span class="nav-icon">📊</span> Hero KPIs</div>
+        <div class="nav-item" onclick="showSection('profile')"><span class="nav-icon">👤</span> Profile Info</div>
+        <div class="nav-item" onclick="showSection('password')"><span class="nav-icon">🔒</span> Change Password</div>
+      </nav>
+      <div class="sidebar-footer">
+        <div style="font-size:0.68rem;color:rgba(250,240,220,0.5);margin-bottom:0.75rem;line-height:1.6;font-family:'JetBrains Mono',monospace;padding:0.6rem;background:rgba(255,255,255,0.05);border-radius:8px">
+          ⚡ Supabase mode<br>Changes save instantly
+        </div>
+        <button class="logout-btn" onclick="doLogout()">🚪 Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+      <!-- ── DASHBOARD ── -->
+      <div class="admin-page active" id="page-dashboard">
+        <div class="page-top">
+          <div><div class="page-title">Dashboard</div><div class="page-subtitle">Welcome back, Bilali 👋</div></div>
+          <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+            <button class="btn btn-outline" onclick="checkConnection()" id="btn-ping">🔌 Test Connection</button>
+          </div>
+        </div>
+        <div id="config-banner" style="background:#e74c3c;border-radius:14px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;display:none;align-items:center;gap:1rem;flex-wrap:wrap">
+          <div style="font-size:1.5rem">⚠️</div>
+          <div style="flex:1">
+            <div style="font-size:0.85rem;font-weight:700;color:#fff;margin-bottom:0.2rem">Supabase not connected</div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.8);line-height:1.5">
+              Open <strong>admin.html</strong> in a text editor and replace <code>YOUR_SUPABASE_URL</code> and <code>YOUR_SUPABASE_ANON_KEY</code> with your real credentials. See SUPABASE_SETUP.md for instructions.
+            </div>
+          </div>
+        </div>
+        <div id="supabase-banner" style="background:var(--teal);border-radius:14px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+          <div style="font-size:1.5rem">⚡</div>
+          <div style="flex:1">
+            <div style="font-size:0.85rem;font-weight:700;color:var(--cream);margin-bottom:0.2rem">Supabase connected — changes save instantly</div>
+            <div style="font-size:0.78rem;color:rgba(250,240,220,0.65);line-height:1.5">
+              Edit any content below → click <strong style="color:var(--coral)">Save</strong> → your portfolio updates live on GitHub Pages ✅
+            </div>
+          </div>
+          <div style="font-size:0.75rem;color:rgba(250,240,220,0.5);font-family:'JetBrains Mono',monospace" id="sb-status">Checking connection...</div>
+        </div>
+        <div class="stats-row" id="dash-stats"></div>
+        <div class="recent-grid">
+          <div class="recent-card">
+            <h3>📁 Recent Projects</h3>
+            <div id="dash-recent-projects"></div>
+          </div>
+          <div class="recent-card">
+            <h3>✍️ Recent Blog Posts</h3>
+            <div id="dash-recent-blog"></div>
+          </div>
+          <div class="recent-card">
+            <h3>💼 Experience</h3>
+            <div id="dash-recent-exp"></div>
+          </div>
+          <div class="recent-card">
+            <h3>🏅 Certifications</h3>
+            <div id="dash-recent-certs"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PROJECTS ── -->
+      <div class="admin-page" id="page-projects">
+        <div class="page-top">
+          <div><div class="page-title">Projects</div><div class="page-subtitle">Manage your portfolio projects</div></div>
+          <button class="btn btn-coral" onclick="openModal('project')">+ Add Project</button>
+        </div>
+        <div class="toolbar">
+          <div class="search-box"><span>🔍</span><input type="text" placeholder="Search projects..." oninput="filterItems('projects',this.value)"/></div>
+        </div>
+        <div class="items-list" id="list-projects"></div>
+      </div>
+
+      <!-- ── EXPERIENCE ── -->
+      <div class="admin-page" id="page-experience">
+        <div class="page-top">
+          <div><div class="page-title">Experience</div><div class="page-subtitle">Manage work history & volunteering</div></div>
+          <button class="btn btn-coral" onclick="openModal('experience')">+ Add Role</button>
+        </div>
+        <div class="items-list" id="list-experience"></div>
+      </div>
+
+      <!-- ── BLOG ── -->
+      <div class="admin-page" id="page-blog">
+        <div class="page-top">
+          <div><div class="page-title">Blog Posts</div><div class="page-subtitle">Write and manage your articles</div></div>
+          <button class="btn btn-coral" onclick="openModal('blog')">+ New Post</button>
+        </div>
+        <div class="toolbar">
+          <div class="search-box"><span>🔍</span><input type="text" placeholder="Search posts..." oninput="filterItems('blog',this.value)"/></div>
+        </div>
+        <div class="items-list" id="list-blog"></div>
+      </div>
+
+      <!-- ── CERTIFICATIONS ── -->
+      <div class="admin-page" id="page-certifications">
+        <div class="page-top">
+          <div><div class="page-title">Certifications</div><div class="page-subtitle">Manage your credentials & awards</div></div>
+          <button class="btn btn-coral" onclick="openModal('cert')">+ Add Certification</button>
+        </div>
+        <div class="items-list" id="list-certifications"></div>
+      </div>
+
+      <!-- ── EDUCATION ── -->
+      <div class="admin-page" id="page-education">
+        <div class="page-top">
+          <div><div class="page-title">Education</div><div class="page-subtitle">Manage academic background</div></div>
+          <button class="btn btn-coral" onclick="openModal('education')">+ Add Education</button>
+        </div>
+        <div class="items-list" id="list-education"></div>
+      </div>
+
+      <!-- ── SKILLS ── -->
+      <div class="admin-page" id="page-skills">
+        <div class="page-top">
+          <div><div class="page-title">Skills</div><div class="page-subtitle">Manage your skill bars</div></div>
+          <button class="btn btn-coral" onclick="openModal('skill')">+ Add Skill</button>
+        </div>
+        <div class="items-list" id="list-skills"></div>
+      </div>
+
+      <!-- ── HERO KPIs ── -->
+      <div class="admin-page" id="page-kpis">
+        <div class="page-top">
+          <div><div class="page-title">Hero KPIs</div><div class="page-subtitle">Edit the 4 stat cards on your homepage</div></div>
+          <button class="btn btn-coral" onclick="saveKPIs()">💾 Save KPIs</button>
+        </div>
+        <div class="settings-grid" id="kpi-editor"></div>
+      </div>
+
+      <!-- ── PROFILE ── -->
+      <div class="admin-page" id="page-profile">
+        <div class="page-top">
+          <div><div class="page-title">Profile Info</div><div class="page-subtitle">Update your personal details</div></div>
+          <button class="btn btn-coral" onclick="saveProfile()">💾 Save Profile</button>
+        </div>
+        <div class="settings-card" style="max-width:600px">
+          <div class="form-row">
+            <div class="form-group"><label>Full Name</label><input id="p-name" value="Bilali Saley Inusah"/></div>
+            <div class="form-group"><label>Job Title</label><input id="p-title" value="Data & Financial Analyst · ICAG Associate"/></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Email</label><input id="p-email" value="bilali.inusah1@gmail.com"/></div>
+            <div class="form-group"><label>Phone</label><input id="p-phone" value="+233 24 204 3413"/></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Location</label><input id="p-location" value="Accra, Ghana"/></div>
+            <div class="form-group"><label>LinkedIn URL</label><input id="p-linkedin" value="https://linkedin.com/in/bilali-saley-inusah"/></div>
+          </div>
+          <div class="form-group"><label>GitHub URL</label><input id="p-github" value="https://github.com/BilaliSaleyInusah"/></div>
+          <div class="form-group"><label>Hero Description</label><textarea id="p-desc">First-Class BCom (Accounting) graduate combining accounting rigour with modern data skills — building dashboards, automating workflows, and surfacing insights that drive real decisions.</textarea></div>
+        </div>
+      </div>
+
+      <!-- ── PASSWORD ── -->
+      <div class="admin-page" id="page-password">
+        <div class="page-top">
+          <div><div class="page-title">Change Password</div><div class="page-subtitle">Update your admin credentials</div></div>
+        </div>
+        <div class="settings-card" style="max-width:420px">
+          <div class="form-group"><label>Current Password</label><input type="password" id="pw-current" placeholder="Enter current password"/></div>
+          <div class="form-group"><label>New Password</label><input type="password" id="pw-new" placeholder="Enter new password"/></div>
+          <div class="form-group"><label>Confirm New Password</label><input type="password" id="pw-confirm" placeholder="Repeat new password"/></div>
+          <button class="btn btn-coral" onclick="changePassword()" style="width:100%;justify-content:center;margin-top:0.5rem">🔒 Update Password</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════════════════════════
+     MODALS
+══════════════════════════════════════ -->
+
+<!-- Project Modal -->
+<div class="modal-overlay" id="modal-project" onclick="closeModalOutside(event,'modal-project')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-project')">✕</button>
+    <h2 id="modal-project-title">Add Project</h2>
+    <input type="hidden" id="proj-edit-idx" value="-1"/>
+    <div class="form-row">
+      <div class="form-group"><label>Project Title</label><input id="proj-title" placeholder="e.g. Revenue Tracking Dashboard"/></div>
+      <div class="form-group"><label>Category Tag</label><input id="proj-tag" placeholder="e.g. POWER BI"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Period / Organisation</label><input id="proj-period" placeholder="e.g. 2024 · Tony's Open Chain Ghana"/></div>
+      <div class="form-group"><label>GitHub URL</label><input id="proj-gh" placeholder="https://github.com/..."/></div>
+    </div>
+    <div class="form-group"><label>LinkedIn URL</label><input id="proj-li" placeholder="https://linkedin.com/..."/></div>
+    <div class="form-group"><label>Summary (1–2 sentences)</label><textarea id="proj-summary" placeholder="Brief overview of the project..."></textarea></div>
+    <div class="form-group"><label>The Problem</label><textarea id="proj-problem" placeholder="What challenge did you solve?"></textarea></div>
+    <div class="form-group"><label>My Approach</label><textarea id="proj-approach" placeholder="How did you solve it?"></textarea></div>
+    <div class="form-group"><label>Key Takeaway / Learning</label><textarea id="proj-learning" placeholder="What was the main lesson or outcome?"></textarea></div>
+    <div class="form-group">
+      <label>Project Cover Image</label>
+      <div class="img-upload-area" onclick="triggerUpload('proj-img-input')">
+        <input type="file" id="proj-img-input" accept="image/*" onchange="previewImg(this,'proj-img-preview','proj-img-b64')"/>
+        <img id="proj-img-preview" class="img-upload-preview" alt="Preview"/>
+        <div class="img-upload-label"><span>🖼️</span>Click to upload project image<br><small>PNG, JPG, WebP — replaces emoji on card</small></div>
+      </div>
+      <input type="hidden" id="proj-img-b64"/>
+    </div>
+    <div class="form-group"><label>Technologies (comma-separated)</label><input id="proj-tech" placeholder="Power BI, DAX, ETL, Python"/></div>
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-project')">Cancel</button>
+      <button class="btn btn-coral" onclick="saveProject()">💾 Save Project</button>
+    </div>
+  </div>
+</div>
+
+<!-- Experience Modal -->
+<div class="modal-overlay" id="modal-experience" onclick="closeModalOutside(event,'modal-experience')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-experience')">✕</button>
+    <h2 id="modal-exp-title">Add Experience</h2>
+    <input type="hidden" id="exp-edit-idx" value="-1"/>
+    <div class="form-row">
+      <div class="form-group"><label>Role / Position</label><input id="exp-role" placeholder="e.g. Data Analyst Intern"/></div>
+      <div class="form-group"><label>Organisation</label><input id="exp-org" placeholder="e.g. Tony's Open Chain Ghana"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Period</label><input id="exp-period" placeholder="e.g. Sep 2024 – Nov 2024"/></div>
+      <div class="form-group"><label>Type</label>
+        <select id="exp-type">
+          <option value="work">Work</option>
+          <option value="volunteer">Volunteer</option>
+          <option value="internship">Internship</option>
+          <option value="national-service">National Service</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>Bullet Points (one per line)</label><textarea id="exp-bullets" style="min-height:120px" placeholder="Built dashboard for...&#10;Managed 1800 farmer records...&#10;Reduced reporting time by 30%..."></textarea></div>
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-experience')">Cancel</button>
+      <button class="btn btn-coral" onclick="saveExperience()">💾 Save Role</button>
+    </div>
+  </div>
+</div>
+
+<!-- Blog Modal -->
+<div class="modal-overlay" id="modal-blog" onclick="closeModalOutside(event,'modal-blog')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-blog')">✕</button>
+    <h2 id="modal-blog-title">New Blog Post</h2>
+    <input type="hidden" id="blog-edit-idx" value="-1"/>
+    <div class="form-row">
+      <div class="form-group"><label>Title</label><input id="blog-title" placeholder="e.g. 5 Power BI Tips Every Analyst Should Know"/></div>
+      <div class="form-group"><label>Category</label>
+        <select id="blog-cat">
+          <option value="tips">Data Tips</option>
+          <option value="stories">Field Stories</option>
+          <option value="finance">Finance & Data</option>
+          <option value="career">Career</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Date</label><input id="blog-date" placeholder="e.g. May 2025"/></div>
+      <div class="form-group"><label>Emoji (for card image)</label><input id="blog-emoji" placeholder="e.g. 📊" maxlength="2"/></div>
+    </div>
+    <div class="form-group">
+      <label>Blog Cover Image <small style="color:var(--gray);font-weight:400">(replaces emoji)</small></label>
+      <div class="img-upload-area" onclick="triggerUpload('blog-img-input')">
+        <input type="file" id="blog-img-input" accept="image/*" onchange="previewImg(this,'blog-img-preview','blog-img-b64')"/>
+        <img id="blog-img-preview" class="img-upload-preview" alt="Preview"/>
+        <div class="img-upload-label"><span>📸</span>Click to upload cover image<br><small>PNG, JPG, WebP</small></div>
+      </div>
+      <input type="hidden" id="blog-img-b64"/>
+    </div>
+    <div class="form-group"><label>Short Preview (shown on card)</label><textarea id="blog-preview" style="min-height:70px" placeholder="One or two sentences that hook the reader..."></textarea></div>
+    <div class="form-group"><label>Full Article Content</label>
+      <p class="form-hint">Write sections using: ## Section Title then your paragraph text on the next line.</p>
+      <textarea id="blog-content" style="min-height:200px" placeholder="## Why This Matters&#10;Your content here...&#10;&#10;## Key Insight&#10;More content..."></textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-blog')">Cancel</button>
+      <button class="btn btn-coral" onclick="saveBlog()">💾 Save Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cert Modal -->
+<div class="modal-overlay" id="modal-cert" onclick="closeModalOutside(event,'modal-cert')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-cert')">✕</button>
+    <h2 id="modal-cert-title">Add Certification</h2>
+    <input type="hidden" id="cert-edit-idx" value="-1"/>
+    <div class="form-row">
+      <div class="form-group"><label>Certification Name</label><input id="cert-name" placeholder="e.g. SQL Associate Certificate"/></div>
+      <div class="form-group"><label>Issuer &amp; Date</label><input id="cert-issuer" placeholder="e.g. DataCamp · Mar 2025"/></div>
+    </div>
+    <div class="form-group"><label>Certificate URL (optional)</label><input id="cert-url" placeholder="https://..."/></div>
+    <div class="form-group"><label>Type</label>
+      <select id="cert-type">
+        <option value="cert">Certification</option>
+        <option value="award">Award / Honour</option>
+      </select>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-cert')">Cancel</button>
+      <button class="btn btn-coral" onclick="saveCert()">💾 Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Education Modal -->
+<div class="modal-overlay" id="modal-education" onclick="closeModalOutside(event,'modal-education')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-education')">✕</button>
+    <h2 id="modal-edu-title">Add Education</h2>
+    <input type="hidden" id="edu-edit-idx" value="-1"/>
+    <div class="form-row">
+      <div class="form-group"><label>Degree / Programme</label><input id="edu-degree" placeholder="e.g. BCom Accounting — First Class Honours"/></div>
+      <div class="form-group"><label>Institution</label><input id="edu-inst" placeholder="e.g. University of Cape Coast"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Period</label><input id="edu-period" placeholder="e.g. 2022 – 2025"/></div>
+    </div>
+    <div class="form-group"><label>Details / Modules (comma-separated)</label><input id="edu-details" placeholder="Financial Reporting · Statistics · Business Law"/></div>
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-education')">Cancel</button>
+      <button class="btn btn-coral" onclick="saveEducation()">💾 Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Skill Modal -->
+<div class="modal-overlay" id="modal-skill" onclick="closeModalOutside(event,'modal-skill')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-skill')">✕</button>
+    <h2 id="modal-skill-title">Add Skill</h2>
+    <input type="hidden" id="skill-edit-idx" value="-1"/>
+    <div class="form-row">
+      <div class="form-group"><label>Skill Name</label><input id="skill-name" placeholder="e.g. Power BI"/></div>
+      <div class="form-group"><label>Category</label>
+        <select id="skill-cat">
+          <option value="data">📊 Data &amp; BI</option>
+          <option value="programming">💻 Programming</option>
+          <option value="finance">💼 Finance &amp; Accounting</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>Proficiency % (0–100)</label><input id="skill-pct" type="number" min="0" max="100" placeholder="e.g. 88"/></div>
+    <div class="form-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-skill')">Cancel</button>
+      <button class="btn btn-coral" onclick="saveSkill()">💾 Save Skill</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════
+   SUPABASE CONFIG — paste your values here
+══════════════════════════════════ */
+const SUPABASE_URL = "https://fybwtvthzxhrtsexzqqk.supabase.co"
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5Ynd0dnRoenhocnRzZXh6cXFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3NTQwMzYsImV4cCI6MjA5NDMzMDAzNn0.aHsJQEQ9XscdxOGu2lYpSOT6YBjpn8fwnSzi_EstEh4';
+
+const sb = {
+  async get(table, opts=''){
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?order=sort_order.asc${opts}`, {
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    if(!r.ok) throw new Error(await r.text());
+    return r.json();
+  },
+  async insert(table, data){
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+      method:'POST',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},
+      body: JSON.stringify(data)
+    });
+    if(!r.ok) throw new Error(await r.text());
+    return r.json();
+  },
+  async update(table, id, data){
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
+      method:'PATCH',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},
+      body: JSON.stringify(data)
+    });
+    if(!r.ok) throw new Error(await r.text());
+    return r.json();
+  },
+  async delete(table, id){
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
+      method:'DELETE',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    if(!r.ok) throw new Error(await r.text());
+    return true;
+  },
+  async upsertProfile(data){
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/profile?id=eq.1`, {
+      method:'PATCH',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},
+      body: JSON.stringify(data)
+    });
+    if(!r.ok){ // try insert if not found
+      return fetch(`${SUPABASE_URL}/rest/v1/profile`, {
+        method:'POST',
+        headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},
+        body: JSON.stringify(data)
+      });
+    }
+    return r.json();
+  }
+};
+
+/* ── SUPABASE NOT CONFIGURED? ── */
+function isConfigured(){
+  return SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_KEY !== 'YOUR_SUPABASE_ANON_KEY';
+}
+
+/* ══════════════════════════════════
+   AUTH
+══════════════════════════════════ */
+const ADMIN = { user:'admin', pass:'bilali2025' };
+let currentPass = localStorage.getItem('admin_pass') || ADMIN.pass;
+
+function doLogin(){
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value.trim();
+  if(u === ADMIN.user && p === currentPass){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    renderAll();
+    showToast('Welcome back, Bilali! 👋','success');
+  } else {
+    document.getElementById('login-error').style.display='block';
+  }
+}
+function doLogout(){
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-user').value='';
+  document.getElementById('login-pass').value='';
+}
+function changePassword(){
+  const cur = document.getElementById('pw-current').value;
+  const nw  = document.getElementById('pw-new').value;
+  const cnf = document.getElementById('pw-confirm').value;
+  if(cur !== currentPass){ showToast('Current password is incorrect','error'); return; }
+  if(nw.length < 6){ showToast('New password must be at least 6 characters','error'); return; }
+  if(nw !== cnf){ showToast('Passwords do not match','error'); return; }
+  currentPass = nw;
+  localStorage.setItem('admin_pass', nw);
+  document.getElementById('pw-current').value='';
+  document.getElementById('pw-new').value='';
+  document.getElementById('pw-confirm').value='';
+  showToast('Password updated successfully ✅','success');
+}
+
+/* ══════════════════════════════════
+   DATA STORE  (localStorage)
+══════════════════════════════════ */
+/* localStorage fallback when Supabase not configured */
+function load(key, def){ try{ const d=localStorage.getItem(key); return d?JSON.parse(d):def; }catch(e){ return def; } }
+function save(key, data){ localStorage.setItem(key, JSON.stringify(data)); }
+
+let DATA = {
+  projects: load('adm_projects', [
+    {tag:'POWER BI',title:'Revenue Tracking Dashboard',period:'2024 · Tony\'s Open Chain Ghana',summary:'Interactive Power BI dashboard for profitability analysis and real-time KPI monitoring.',problem:'Decision-makers lacked a unified view of revenue performance.',approach:'Built a multi-page Power BI report with DAX measures and star-schema model.',learning:'Clarity beats complexity when designing for non-technical stakeholders.',tech:['Power BI','DAX','Data Modelling','ETL'],gh:'https://github.com/BilaliSaleyInusah',li:'https://linkedin.com/in/bilali-saley-inusah'},
+    {tag:'QGIS · GEOSPATIAL',title:'Farm Encroachment Detection',period:'Sep–Nov 2024 · Tony\'s Open Chain Ghana',summary:'Geospatial analysis identifying 76 farms encroaching on Ghana\'s protected forest reserves.',problem:'Manual verification of GPS farm locations was infeasible at scale.',approach:'Spatial intersection queries in QGIS against official reserve boundary shapefiles.',learning:'Always verify CRS alignment before any spatial join.',tech:['QGIS','Geospatial','GIS Mapping','GPS Data'],gh:'https://github.com/BilaliSaleyInusah',li:'https://linkedin.com/in/bilali-saley-inusah'},
+    {tag:'EXCEL · KOBOCOLLECT',title:'Child Labour Risk Dashboard',period:'Sep–Nov 2024 · Tony\'s Open Chain Ghana',summary:'Monitoring dashboard that enabled interventions helping 56 children return to school.',problem:'Officers needed a clear view of at-risk children across communities.',approach:'KoboCollect forms + Excel cleaning pipeline + colour-coded dashboard.',learning:'Form design determines data quality — design for the analyst, not just the enumerator.',tech:['Excel','KoboCollect','Data Viz','Survey Design'],gh:'https://github.com/BilaliSaleyInusah',li:'https://linkedin.com/in/bilali-saley-inusah'},
+  ]),
+  experience: load('adm_experience', [
+    {role:'Data Analyst — National Service',org:'Tony\'s Open Chain Ghana',period:'Sep 2025 – Present',type:'national-service',bullets:['Analytics dashboard for Productivity Dept. tracking field activities & farm performance','Excel tools for cocoa unions tracking farmer deliveries vs. expected volumes','KoboCollect systems for farm, household & child labour field data capture']},
+    {role:'Data Analytics & Engineering Track Coach',org:'GearUp Africa',period:'2025 – Present',type:'volunteer',bullets:['Mentor aspiring data professionals from Ghanaian universities','One-on-one coaching and bi-weekly group sessions','Contributing to West Africa\'s data talent pipeline']},
+    {role:'Data Analyst Intern',org:'Tony\'s Open Chain Ghana',period:'Sep 2024 – Nov 2024',type:'internship',bullets:['Compiled register of 1,800 farmers across 26 societies','Child labour risk dashboard — 56 children helped out of hazardous farm work','QGIS geospatial analysis detecting 76 farms encroaching on protected forest reserves']},
+    {role:'Banking Intern',org:'First National Bank Ghana Ltd',period:'Sep 2023 – Nov 2023',type:'internship',bullets:['Resolved 10+ customer inquiries daily','Assisted 15 clients daily with fund transfers, ATM & USSD banking']},
+  ]),
+  blog: load('adm_blog', [
+    {title:'5 Power BI DAX Formulas Every Analyst Should Know',cat:'tips',date:'April 2025',emoji:'📊',preview:'From CALCULATE to RANKX — the DAX functions that unlock your dashboards.',content:'## Why DAX Matters\nPower BI is only as powerful as the formulas driving it.\n\n## 1. CALCULATE\nModifies the filter context — foundation of every complex measure.\n\n## 2. RANKX\nDynamic rankings that update as users filter.\n\n## 3. DIVIDE\nSafe division that handles zero denominators gracefully.'},
+    {title:'How Data Helped 56 Children Return to School in Ghana',cat:'stories',date:'March 2025',emoji:'🌍',preview:'How Excel and KoboCollect became tools for social impact.',content:'## The Problem\nChild labour in cocoa farming communities is persistent.\n\n## The Data Solution\nDashboard visualising child labour risk indicators across societies.\n\n## The Outcome\n56 children returned to school after targeted interventions.'},
+    {title:'From Accounting Student to Data Analyst: My Transition Story',cat:'career',date:'November 2024',emoji:'🎯',preview:'How a First-Class accounting degree became the foundation for a data career.',content:'## Why Accounting First?\nTo understand how businesses actually work.\n\n## The Data Pivot\nFestMan Data Accelerator — 8-week intensive in Power BI, SQL, Excel.\n\n## Key Advice\nDomain expertise is an asset. Lean into what makes you different.'},
+  ]),
+  certifications: load('adm_certifications', [
+    {name:'SQL Associate Certificate',issuer:'DataCamp · Mar 2025',url:'https://www.datacamp.com/certificate/SQA0011671801007',type:'cert'},
+    {name:'Investment Foundations®',issuer:'CFA Institute · Oct 2024',url:'https://credentials.cfainstitute.org/5129aee0-49e3-40fa-a795-4fabc2a9bd51#acc.DYezIiBg',type:'cert'},
+    {name:'Enterprise Design Thinking Practitioner',issuer:'IBM · Nov 2024',url:'https://www.credly.com/badges/aacb1fff-b4f8-42e8-9fec-491cb422eac2',type:'cert'},
+    {name:'Python (Basic) Certificate',issuer:'HackerRank · May 2023',url:'https://www.hackerrank.com/certificates/iframe/7d220fac7414',type:'cert'},
+    {name:"Dean's Award for Outstanding Academic Performance — 3 Consecutive Years",issuer:'University of Cape Coast · 2022, 2023, 2024',url:'',type:'award'},
+  ]),
+  education: load('adm_education', [
+    {degree:'BCom Accounting — First Class Honours',institution:'University of Cape Coast',period:'2022 – 2025',details:'Financial Reporting · Statistics · Business Law · IT Skills'},
+    {degree:'Associate Member (ICAG)',institution:'Institute of Chartered Accountants, Ghana',period:'Apr 2025 – Nov 2025',details:'Financial Management · Corporate Reporting · Advanced Taxation'},
+    {degree:'Data Analysis Intensive',institution:'FestMan Data Accelerator Program',period:'Nov 2024 – Jan 2025',details:'SQL · Power BI · Excel · AI Applications · BI Case Studies'},
+  ]),
+  skills: load('adm_skills', [
+    {name:'Power BI',cat:'data',pct:88},{name:'SQL',cat:'data',pct:85},{name:'Excel Dashboards',cat:'data',pct:92},{name:'QGIS',cat:'data',pct:76},
+    {name:'Python (Pandas, Matplotlib)',cat:'programming',pct:78},{name:'Excel VBA / Automation',cat:'programming',pct:82},{name:'KoboCollect Systems',cat:'programming',pct:84},{name:'Git',cat:'programming',pct:70},
+    {name:'Financial Reporting (ICAG)',cat:'finance',pct:93},{name:'Budgeting & Forecasting',cat:'finance',pct:86},{name:'Management Accounting',cat:'finance',pct:88},{name:'Investment Analysis',cat:'finance',pct:80},
+  ]),
+  kpis: load('adm_kpis', [
+    {emoji:'🌱',num:'2,000+',label:'Farm Records Managed',desc:'Compiled & verified across 26 societies for fair bonus disbursement'},
+    {emoji:'💼',num:'2+ yrs',label:'Analyst Experience',desc:'Freelance · Internship · National Service · Volunteer across agribusiness & finance'},
+    {emoji:'⚡',num:'50%',label:'Reporting Time Reduced',desc:'Automated cocoa delivery & child labour tracking workflows'},
+    {emoji:'🛠️',num:'10+',label:'Tools & Technologies',desc:'SQL · Power BI · Python · Excel · QGIS · KoboCollect · DAX · Git · AppSheet'},
+  ]),
+};
+
+function saveAll(){
+  // Always save to localStorage as backup
+  Object.keys(DATA).forEach(k=>save('adm_'+k,DATA[k]));
+}
+
+/* ══════════════════════════════════
+   NAVIGATION
+══════════════════════════════════ */
+function showSection(id){
+  document.querySelectorAll('.admin-page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if(id==='dashboard') renderDashboard();
+  if(id==='projects') renderList('projects');
+  if(id==='experience') renderList('experience');
+  if(id==='blog') renderList('blog');
+  if(id==='certifications') renderList('certifications');
+  if(id==='education') renderList('education');
+  if(id==='skills') renderList('skills');
+  if(id==='kpis') renderKPIs();
+  closeMobileMenu();
+}
+function renderAll(){
+  addIdFields();
+  loadAllFromSupabase().then(()=>renderDashboard());
+}
+
+/* ══════════════════════════════════
+   DASHBOARD
+══════════════════════════════════ */
+function renderDashboard(){
+  const stats = [
+    {icon:'📁',num:DATA.projects.length,label:'Projects'},
+    {icon:'💼',num:DATA.experience.length,label:'Roles'},
+    {icon:'✍️',num:DATA.blog.length,label:'Blog Posts'},
+    {icon:'🏅',num:DATA.certifications.length,label:'Certifications'},
+    {icon:'🎓',num:DATA.education.length,label:'Education'},
+    {icon:'🛠️',num:DATA.skills.length,label:'Skills'},
+  ];
+  document.getElementById('dash-stats').innerHTML = stats.map(s=>`
+    <div class="dash-stat">
+      <div class="ds-icon">${s.icon}</div>
+      <div class="ds-num">${s.num}</div>
+      <div class="ds-label">${s.label}</div>
+    </div>`).join('');
+
+  document.getElementById('dash-recent-projects').innerHTML = DATA.projects.slice(0,3).map(p=>`
+    <div class="recent-item">
+      <div><div class="recent-item-name">${p.title}</div><div class="recent-item-meta">${p.tag}</div></div>
+    </div>`).join('') || emptyState('No projects yet');
+
+  document.getElementById('dash-recent-blog').innerHTML = DATA.blog.slice(0,3).map(b=>`
+    <div class="recent-item">
+      <div><div class="recent-item-name">${b.title}</div><div class="recent-item-meta">${b.date} · ${b.cat}</div></div>
+    </div>`).join('') || emptyState('No posts yet');
+
+  document.getElementById('dash-recent-exp').innerHTML = DATA.experience.slice(0,3).map(e=>`
+    <div class="recent-item">
+      <div><div class="recent-item-name">${e.role}</div><div class="recent-item-meta">${e.org} · ${e.period}</div></div>
+      <span class="badge ${e.type==='volunteer'?'badge-coral':e.type==='internship'?'badge-amber':'badge-teal'}">${e.type}</span>
+    </div>`).join('') || emptyState('No experience yet');
+
+  document.getElementById('dash-recent-certs').innerHTML = DATA.certifications.slice(0,4).map(c=>`
+    <div class="recent-item">
+      <div><div class="recent-item-name">${c.name}</div><div class="recent-item-meta">${c.issuer}</div></div>
+      <span class="badge ${c.type==='award'?'badge-amber':'badge-teal'}">${c.type}</span>
+    </div>`).join('') || emptyState('No certs yet');
+}
+function emptyState(msg){ return `<div style="text-align:center;padding:1rem;color:var(--gray);font-size:0.82rem">${msg}</div>`; }
+
+/* ══════════════════════════════════
+   RENDER LISTS
+══════════════════════════════════ */
+function renderList(key, filter=''){
+  const containers = {
+    projects:'list-projects', experience:'list-experience',
+    blog:'list-blog', certifications:'list-certifications',
+    education:'list-education', skills:'list-skills'
+  };
+  const el = document.getElementById(containers[key]);
+  if(!el) return;
+  let items = DATA[key];
+  if(filter) items = items.filter(i=>JSON.stringify(i).toLowerCase().includes(filter.toLowerCase()));
+  if(!items.length){ el.innerHTML=`<div class="empty-state"><div class="es-icon">📭</div><p>Nothing here yet. Click + Add to get started.</p></div>`; return; }
+
+  if(key==='projects') el.innerHTML = items.map((p,i)=>`
+    <div class="item-card">
+      <div class="img-thumb" style="margin-right:0.5rem">
+        ${p.img ? `<img src="${p.img}" alt="${p.title}"/>` : `<span style="font-size:1.5rem">📁</span>`}
+      </div>
+      <div class="item-card-body">
+        <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.3rem">
+          <span class="badge badge-coral">${p.tag}</span>
+        </div>
+        <div class="item-card-title">${p.title}</div>
+        <div class="item-card-meta">${p.period}</div>
+        <div class="item-card-desc">${p.summary}</div>
+        <div class="item-card-tech">${(p.tech||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-outline btn-sm" onclick="editItem('project',${i})">✏️ Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteItem('projects',${i})">🗑️</button>
+      </div>
+    </div>`).join('');
+
+  else if(key==='experience') el.innerHTML = items.map((e,i)=>`
+    <div class="item-card">
+      <div class="item-card-body">
+        <div class="item-card-title">${e.role} <span class="badge ${e.type==='volunteer'?'badge-coral':e.type==='internship'?'badge-amber':'badge-teal'}" style="margin-left:0.4rem">${e.type}</span></div>
+        <div class="item-card-meta">${e.org} · ${e.period}</div>
+        <div class="item-card-desc">${(e.bullets||[]).map(b=>`▹ ${b}`).join('<br>')}</div>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-outline btn-sm" onclick="editItem('experience',${i})">✏️ Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteItem('experience',${i})">🗑️</button>
+      </div>
+    </div>`).join('');
+
+  else if(key==='blog') el.innerHTML = items.map((b,i)=>`
+    <div class="item-card" style="align-items:center">
+      <div class="img-thumb" style="margin-right:0.5rem">
+        ${b.img ? `<img src="${b.img}" alt="${b.title}"/>` : `<span style="font-size:1.5rem">${b.emoji||'✍️'}</span>`}
+      </div>
+      <div class="item-card-body">
+        <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.3rem">
+          <span class="badge badge-teal">${b.cat}</span>
+          <span style="font-size:0.73rem;color:var(--gray);font-family:'JetBrains Mono',monospace">${b.date}</span>
+        </div>
+        <div class="item-card-title">${b.emoji||''} ${b.title}</div>
+        <div class="item-card-desc">${b.preview}</div>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-outline btn-sm" onclick="editItem('blog',${i})">✏️ Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteItem('blog',${i})">🗑️</button>
+      </div>
+    </div>`).join('');
+
+  else if(key==='certifications') el.innerHTML = items.map((c,i)=>`
+    <div class="item-card">
+      <div class="item-card-body">
+        <span class="badge ${c.type==='award'?'badge-amber':'badge-teal'}" style="margin-bottom:0.4rem">${c.type}</span>
+        <div class="item-card-title">${c.name}</div>
+        <div class="item-card-meta">${c.issuer}</div>
+        ${c.url?`<a href="${c.url}" target="_blank" style="font-size:0.78rem;color:var(--coral);font-weight:700;text-decoration:none;margin-top:0.3rem;display:inline-block">🔗 View Certificate</a>`:''}
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-outline btn-sm" onclick="editItem('cert',${i})">✏️ Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteItem('certifications',${i})">🗑️</button>
+      </div>
+    </div>`).join('');
+
+  else if(key==='education') el.innerHTML = items.map((e,i)=>`
+    <div class="item-card">
+      <div class="item-card-body">
+        <div class="item-card-title">${e.degree}</div>
+        <div class="item-card-meta">${e.institution} · ${e.period}</div>
+        <div class="item-card-desc">${e.details}</div>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-outline btn-sm" onclick="editItem('education',${i})">✏️ Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteItem('education',${i})">🗑️</button>
+      </div>
+    </div>`).join('');
+
+  else if(key==='skills') el.innerHTML = items.map((s,i)=>`
+    <div class="item-card">
+      <div class="item-card-body">
+        <div class="item-card-title">${s.name}</div>
+        <div class="item-card-meta">${s.cat} · ${s.pct}%</div>
+        <div style="margin-top:0.5rem;height:6px;background:var(--cream-dark);border-radius:3px;overflow:hidden;max-width:300px">
+          <div style="height:100%;width:${s.pct}%;background:linear-gradient(90deg,var(--teal),var(--teal-light));border-radius:3px"></div>
+        </div>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-outline btn-sm" onclick="editItem('skill',${i})">✏️ Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteItem('skills',${i})">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+function filterItems(key,val){ renderList(key,val); }
+
+/* ══════════════════════════════════
+   MODALS
+══════════════════════════════════ */
+function openModal(type){ clearModal(type); document.getElementById('modal-'+type).classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+function closeModalOutside(e,id){ if(e.target===document.getElementById(id)) closeModal(id); }
+
+function clearModal(type){
+  if(type==='project'){
+    document.getElementById('modal-project-title').textContent='Add Project';
+    document.getElementById('proj-edit-idx').value='-1';
+    ['proj-title','proj-tag','proj-period','proj-gh','proj-li','proj-summary','proj-problem','proj-approach','proj-learning','proj-tech'].forEach(id=>document.getElementById(id).value='');
+    const pp=document.getElementById('proj-img-preview'); if(pp){pp.src='';pp.classList.remove('show');}
+    const pb=document.getElementById('proj-img-b64'); if(pb) pb.value='';
+    const pl=document.querySelector('#modal-project .img-upload-label'); if(pl) pl.style.display='';
+  }
+  if(type==='experience'){
+    document.getElementById('modal-exp-title').textContent='Add Experience';
+    document.getElementById('exp-edit-idx').value='-1';
+    ['exp-role','exp-org','exp-period','exp-bullets'].forEach(id=>document.getElementById(id).value='');
+  }
+  if(type==='blog'){
+    document.getElementById('modal-blog-title').textContent='New Blog Post';
+    document.getElementById('blog-edit-idx').value='-1';
+    ['blog-title','blog-date','blog-emoji','blog-preview','blog-content'].forEach(id=>document.getElementById(id).value='');
+    const bp=document.getElementById('blog-img-preview'); if(bp){bp.src='';bp.classList.remove('show');}
+    const bb=document.getElementById('blog-img-b64'); if(bb) bb.value='';
+    const bl=document.querySelector('#modal-blog .img-upload-label'); if(bl) bl.style.display='';
+  }
+  if(type==='cert'){
+    document.getElementById('modal-cert-title').textContent='Add Certification';
+    document.getElementById('cert-edit-idx').value='-1';
+    ['cert-name','cert-issuer','cert-url'].forEach(id=>document.getElementById(id).value='');
+  }
+  if(type==='education'){
+    document.getElementById('modal-edu-title').textContent='Add Education';
+    document.getElementById('edu-edit-idx').value='-1';
+    ['edu-degree','edu-inst','edu-period','edu-details'].forEach(id=>document.getElementById(id).value='');
+  }
+  if(type==='skill'){
+    document.getElementById('modal-skill-title').textContent='Add Skill';
+    document.getElementById('skill-edit-idx').value='-1';
+    ['skill-name','skill-pct'].forEach(id=>document.getElementById(id).value='');
+  }
+}
+
+function editItem(type, idx){
+  clearModal(type);
+  if(type==='project'){
+    const p=DATA.projects[idx];
+    document.getElementById('modal-project-title').textContent='Edit Project';
+    document.getElementById('proj-edit-idx').value=idx;
+    document.getElementById('proj-title').value=p.title;
+    document.getElementById('proj-tag').value=p.tag;
+    document.getElementById('proj-period').value=p.period;
+    document.getElementById('proj-gh').value=p.gh||'';
+    document.getElementById('proj-li').value=p.li||'';
+    document.getElementById('proj-summary').value=p.summary;
+    document.getElementById('proj-problem').value=p.problem||'';
+    document.getElementById('proj-approach').value=p.approach||'';
+    document.getElementById('proj-learning').value=p.learning||'';
+    document.getElementById('proj-tech').value=(p.tech||[]).join(', ');
+    openModal('project');
+    setTimeout(()=>restoreProjImg(idx),50);
+  }
+  if(type==='experience'){
+    const e=DATA.experience[idx];
+    document.getElementById('modal-exp-title').textContent='Edit Role';
+    document.getElementById('exp-edit-idx').value=idx;
+    document.getElementById('exp-role').value=e.role;
+    document.getElementById('exp-org').value=e.org;
+    document.getElementById('exp-period').value=e.period;
+    document.getElementById('exp-type').value=e.type;
+    document.getElementById('exp-bullets').value=(e.bullets||[]).join('\n');
+    openModal('experience');
+  }
+  if(type==='blog'){
+    const b=DATA.blog[idx];
+    document.getElementById('modal-blog-title').textContent='Edit Post';
+    document.getElementById('blog-edit-idx').value=idx;
+    document.getElementById('blog-title').value=b.title;
+    document.getElementById('blog-cat').value=b.cat;
+    document.getElementById('blog-date').value=b.date;
+    document.getElementById('blog-emoji').value=b.emoji||'';
+    document.getElementById('blog-preview').value=b.preview;
+    document.getElementById('blog-content').value=b.content;
+    openModal('blog');
+    setTimeout(()=>restoreBlogImg(idx),50);
+  }
+  if(type==='cert'){
+    const c=DATA.certifications[idx];
+    document.getElementById('modal-cert-title').textContent='Edit Certification';
+    document.getElementById('cert-edit-idx').value=idx;
+    document.getElementById('cert-name').value=c.name;
+    document.getElementById('cert-issuer').value=c.issuer;
+    document.getElementById('cert-url').value=c.url||'';
+    document.getElementById('cert-type').value=c.type;
+    openModal('cert');
+  }
+  if(type==='education'){
+    const e=DATA.education[idx];
+    document.getElementById('modal-edu-title').textContent='Edit Education';
+    document.getElementById('edu-edit-idx').value=idx;
+    document.getElementById('edu-degree').value=e.degree;
+    document.getElementById('edu-inst').value=e.institution;
+    document.getElementById('edu-period').value=e.period;
+    document.getElementById('edu-details').value=e.details;
+    openModal('education');
+  }
+  if(type==='skill'){
+    const s=DATA.skills[idx];
+    document.getElementById('modal-skill-title').textContent='Edit Skill';
+    document.getElementById('skill-edit-idx').value=idx;
+    document.getElementById('skill-name').value=s.name;
+    document.getElementById('skill-cat').value=s.cat;
+    document.getElementById('skill-pct').value=s.pct;
+    openModal('skill');
+  }
+}
+
+async function deleteItem(key, idx){
+  if(!confirm('Delete this item? This cannot be undone.')) return;
+  try{
+    if(isConfigured() && DATA[key][idx]?.id){
+      await sb.delete(key, DATA[key][idx].id);
+      await loadFromSupabase(key);
+    } else {
+      DATA[key].splice(idx,1);
+      saveAll();
+    }
+    renderList(key);
+    renderDashboard();
+    showToast('Deleted ✅','success');
+  } catch(e){ showToast('Error: '+e.message,'error'); }
+}
+
+/* ══════════════════════════════════
+   SAVE FUNCTIONS
+══════════════════════════════════ */
+async function saveProject(){
+  const idx   = parseInt(document.getElementById('proj-edit-idx').value);
+  const editId = document.getElementById('proj-edit-id')?.value || '';
+  const obj = {
+    title:    g('proj-title'),  tag:      g('proj-tag'),
+    period:   g('proj-period'), gh:       g('proj-gh'),
+    li:       g('proj-li'),     summary:  g('proj-summary'),
+    problem:  g('proj-problem'),approach: g('proj-approach'),
+    learning: g('proj-learning'),
+    tech:     g('proj-tech').split(',').map(t=>t.trim()).filter(Boolean),
+    outcomes: [],
+    img: document.getElementById('proj-img-b64').value || (DATA.projects[idx]||{}).img || ''
+  };
+  if(!obj.title||!obj.tag){ showToast('Title and tag are required','error'); return; }
+  try{
+    if(isConfigured()){
+      if(editId){ await sb.update('projects', editId, obj); }
+      else       { const r = await sb.insert('projects', obj); obj.id = r[0]?.id; }
+      await loadFromSupabase('projects');
+    } else {
+      idx===-1 ? DATA.projects.push(obj) : DATA.projects[idx]=obj;
+      saveAll();
+    }
+    closeModal('modal-project'); renderList('projects'); renderDashboard();
+    showToast(idx===-1?'Project added ✅':'Project updated ✅','success');
+  } catch(e){ showToast('Error: '+e.message,'error'); }
+}
+
+async function saveExperience(){
+  const idx    = parseInt(document.getElementById('exp-edit-idx').value);
+  const editId = document.getElementById('exp-edit-id')?.value || '';
+  const obj = {
+    role:    g('exp-role'),   org:    g('exp-org'),
+    period:  g('exp-period'), type:   document.getElementById('exp-type').value,
+    bullets: g('exp-bullets').split('\n').map(b=>b.trim()).filter(Boolean)
+  };
+  if(!obj.role||!obj.org){ showToast('Role and organisation are required','error'); return; }
+  try{
+    if(isConfigured()){
+      if(editId){ await sb.update('experience', editId, obj); }
+      else       { await sb.insert('experience', obj); }
+      await loadFromSupabase('experience');
+    } else {
+      idx===-1 ? DATA.experience.push(obj) : DATA.experience[idx]=obj;
+      saveAll();
+    }
+    closeModal('modal-experience'); renderList('experience'); renderDashboard();
+    showToast(idx===-1?'Role added ✅':'Role updated ✅','success');
+  } catch(e){ showToast('Error: '+e.message,'error'); }
+}
+
+async function saveBlog(){
+  const idx    = parseInt(document.getElementById('blog-edit-idx').value);
+  const editId = document.getElementById('blog-edit-id')?.value || '';
+  const obj = {
+    title:   g('blog-title'),   cat:     document.getElementById('blog-cat').value,
+    date:    g('blog-date'),    emoji:   g('blog-emoji'),
+    preview: g('blog-preview'), content: g('blog-content'),
+    img: document.getElementById('blog-img-b64').value || (DATA.blog[idx]||{}).img || '',
+    published: true
+  };
+  if(!obj.title||!obj.preview){ showToast('Title and preview are required','error'); return; }
+  try{
+    if(isConfigured()){
+      if(editId){ await sb.update('blog', editId, obj); }
+      else       { await sb.insert('blog', obj); }
+      await loadFromSupabase('blog');
+    } else {
+      idx===-1 ? DATA.blog.push(obj) : DATA.blog[idx]=obj;
+      saveAll();
+    }
+    closeModal('modal-blog'); renderList('blog'); renderDashboard();
+    showToast(idx===-1?'Post published ✅':'Post updated ✅','success');
+  } catch(e){ showToast('Error: '+e.message,'error'); }
+}
+
+async function saveCert(){
+  const idx    = parseInt(document.getElementById('cert-edit-idx').value);
+  const editId = document.getElementById('cert-edit-id')?.value || '';
+  const obj = {
+    name:   g('cert-name'),   issuer: g('cert-issuer'),
+    url:    g('cert-url'),    type:   document.getElementById('cert-type').value
+  };
+  if(!obj.name){ showToast('Name is required','error'); return; }
+  try{
+    if(isConfigured()){
+      if(editId){ await sb.update('certifications', editId, obj); }
+      else       { await sb.insert('certifications', obj); }
+      await loadFromSupabase('certifications');
+    } else {
+      idx===-1 ? DATA.certifications.push(obj) : DATA.certifications[idx]=obj;
+      saveAll();
+    }
+    closeModal('modal-cert'); renderList('certifications'); renderDashboard();
+    showToast(idx===-1?'Added ✅':'Updated ✅','success');
+  } catch(e){ showToast('Error: '+e.message,'error'); }
+}
+
+async function saveEducation(){
+  const idx    = parseInt(document.getElementById('edu-edit-idx').value);
+  const editId = document.getElementById('edu-edit-id')?.value || '';
+  const obj = {
+    degree:g('edu-degree'), institution:g('edu-inst'),
+    period:g('edu-period'), details:g('edu-details')
+  };
+  if(!obj.degree){ showToast('Degree is required','error'); return; }
+  try{
+    if(isConfigured()){
+      if(editId){ await sb.update('education', editId, obj); }
+      else       { await sb.insert('education', obj); }
+      await loadFromSupabase('education');
+    } else {
+      idx===-1 ? DATA.education.push(obj) : DATA.education[idx]=obj;
+      saveAll();
+    }
+    closeModal('modal-education'); renderList('education'); renderDashboard();
+    showToast(idx===-1?'Added ✅':'Updated ✅','success');
+  } catch(e){ showToast('Error: '+e.message,'error'); }
+}
+
+async function saveSkill(){
+  const idx    = parseInt(document.getElementById('skill-edit-idx').value);
+  const editId = document.getElementById('skill-edit-id')?.value || '';
+  const obj = {
+    name:g('skill-name'),
+    cat: document.getElementById('skill-cat').value,
+    pct: parseInt(document.getElementById('skill-pct').value)||0
+  };
+  if(!obj.name){ showToast('Skill name is required','error'); return; }
+  try{
+    if(isConfigured()){
+      if(editId){ await sb.update('skills', editId, obj); }
+      else       { await sb.insert('skills', obj); }
+      await loadFromSupabase('skills');
+    } else {
+      idx===-1 ? DATA.skills.push(obj) : DATA.skills[idx]=obj;
+      saveAll();
+    }
+    closeModal('modal-skill'); renderList('skills'); renderDashboard();
+    showToast(idx===-1?'Added ✅':'Updated ✅','success');
+  } catch(e){ showToast('Error: '+e.message,'error'); }
+}
+
+/* ══════════════════════════════════
+   KPIs
+══════════════════════════════════ */
+function renderKPIs(){
+  document.getElementById('kpi-editor').innerHTML = DATA.kpis.map((k,i)=>`
+    <div class="settings-card">
+      <h3>KPI Card ${i+1}</h3>
+      <div class="form-group"><label>Icon / Emoji</label>
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <input value="${k.emoji}" onchange="DATA.kpis[${i}].emoji=this.value" style="font-size:1.4rem;padding:0.5rem;width:80px"/>
+          <div style="flex:1">
+            <div class="img-upload-area" style="padding:0.7rem" onclick="triggerUpload('kpi-img-${i}')">
+              <input type="file" id="kpi-img-${i}" accept="image/*" onchange="previewKpiImg(this,${i})"/>
+              ${k.img ? `<img src="${k.img}" style="width:40px;height:40px;object-fit:contain;border-radius:6px"/>` : '<span style="font-size:0.75rem;color:var(--gray)">Upload icon image</span>'}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group"><label>Number / Value</label><input value="${k.num}" onchange="DATA.kpis[${i}].num=this.value" placeholder="e.g. 2,000+"/></div>
+      <div class="form-group"><label>Label</label><input value="${k.label}" onchange="DATA.kpis[${i}].label=this.value" placeholder="e.g. Farm Records Managed"/></div>
+      <div class="form-group"><label>Description</label><textarea onchange="DATA.kpis[${i}].desc=this.value" placeholder="Context sentence...">${k.desc}</textarea></div>
+    </div>`).join('');
+}
+async function saveKPIs(){
+  try{
+    if(isConfigured()){
+      for(const k of DATA.kpis){
+        if(k.id){ await sb.update('kpis', k.id, {emoji:k.emoji,num:k.num,label:k.label,description:k.desc||k.description,img:k.img||''}); }
+      }
+      await loadFromSupabase('kpis');
+    }
+    saveAll();
+    showToast('KPIs saved ✅','success');
+  } catch(e){ showToast('Error: '+e.message,'error'); }
+}
+
+/* ══════════════════════════════════
+   PROFILE
+══════════════════════════════════ */
+async function saveProfile(){
+  const data = {
+    name:     g('p-name'),     title:    g('p-title'),
+    email:    g('p-email'),    phone:    g('p-phone'),
+    location: g('p-location'), linkedin: g('p-linkedin'),
+    github:   g('p-github'),   bio:      g('p-desc')
+  };
+  try{
+    if(isConfigured()){ await sb.upsertProfile(data); showToast('Profile saved — live instantly ✅','success'); }
+    else { saveAll(); showToast('Profile saved locally ✅','success'); }
+  } catch(e){ showToast('Error: '+e.message,'error'); }
+}
+
+/* ══════════════════════════════════
+   HELPERS
+══════════════════════════════════ */
+function g(id){ return document.getElementById(id).value.trim(); }
+
+function showToast(msg, type='success'){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(()=>t.classList.remove('show'), 3500);
+}
+
+/* ══════════════════════════════════
+   MOBILE NAV
+══════════════════════════════════ */
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('mob-overlay').classList.toggle('open');
+}
+function closeMobileMenu(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('mob-overlay').classList.remove('open');
+}
+
+/* ══════════════════════════════════
+   IMAGE UPLOAD HELPERS
+══════════════════════════════════ */
+function triggerUpload(inputId){
+  // Let the input's own click handle it (file input is absolute-positioned over the area)
+}
+
+function previewImg(input, previewId, b64Id){
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const preview = document.getElementById(previewId);
+    const b64input = document.getElementById(b64Id);
+    if(preview){ preview.src = e.target.result; preview.classList.add('show'); }
+    if(b64input) b64input.value = e.target.result;
+    // Hide the label
+    const label = input.closest('.img-upload-area').querySelector('.img-upload-label');
+    if(label) label.style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function previewKpiImg(input, idx){
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    DATA.kpis[idx].img = e.target.result;
+    renderKPIs();
+  };
+  reader.readAsDataURL(file);
+}
+
+/* Restore image fields when editing */
+function restoreProjImg(idx){
+  const img = (DATA.projects[idx]||{}).img;
+  if(img){
+    const preview = document.getElementById('proj-img-preview');
+    const b64 = document.getElementById('proj-img-b64');
+    if(preview){ preview.src=img; preview.classList.add('show'); }
+    if(b64) b64.value = img;
+    const label = document.querySelector('#modal-project .img-upload-label');
+    if(label) label.style.display='none';
+  }
+}
+function restoreBlogImg(idx){
+  const img = (DATA.blog[idx]||{}).img;
+  if(img){
+    const preview = document.getElementById('blog-img-preview');
+    const b64 = document.getElementById('blog-img-b64');
+    if(preview){ preview.src=img; preview.classList.add('show'); }
+    if(b64) b64.value = img;
+    const label = document.querySelector('#modal-blog .img-upload-label');
+    if(label) label.style.display='none';
+  }
+}
+
+
+/* ══════════════════════════════════
+   EXPORT / IMPORT
+══════════════════════════════════ */
+function exportJSON(){
+  // Build the full data object matching data.json schema
+  const payload = {
+    profile: {
+      name:     document.getElementById('p-name')?.value     || 'Bilali Saley Inusah',
+      title:    document.getElementById('p-title')?.value    || 'Data & Financial Analyst · ICAG Associate',
+      email:    document.getElementById('p-email')?.value    || 'bilali.inusah1@gmail.com',
+      phone:    document.getElementById('p-phone')?.value    || '+233 24 204 3413',
+      location: document.getElementById('p-location')?.value || 'Accra, Ghana',
+      linkedin: document.getElementById('p-linkedin')?.value || 'https://linkedin.com/in/bilali-saley-inusah',
+      github:   document.getElementById('p-github')?.value   || 'https://github.com/BilaliSaleyInusah',
+      cv:       'https://linkedin.com/in/bilali-saley-inusah',
+      bio:      document.getElementById('p-desc')?.value     || '',
+      available: true
+    },
+    kpis:           DATA.kpis,
+    projects:       DATA.projects,
+    experience:     DATA.experience,
+    blog:           DATA.blog,
+    certifications: DATA.certifications,
+    education:      DATA.education,
+    skills:         DATA.skills
+  };
+
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'data.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('data.json downloaded! Upload it to GitHub to go live ✅','success');
+}
+
+function importJSON(){
+  const input = document.createElement('input');
+  input.type  = 'file';
+  input.accept = '.json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try{
+        const parsed = JSON.parse(ev.target.result);
+        if(parsed.projects)       DATA.projects       = parsed.projects;
+        if(parsed.experience)     DATA.experience     = parsed.experience;
+        if(parsed.blog)           DATA.blog           = parsed.blog;
+        if(parsed.certifications) DATA.certifications = parsed.certifications;
+        if(parsed.education)      DATA.education      = parsed.education;
+        if(parsed.skills)         DATA.skills         = parsed.skills;
+        if(parsed.kpis)           DATA.kpis           = parsed.kpis;
+        if(parsed.profile){
+          const p = parsed.profile;
+          if(document.getElementById('p-name'))     document.getElementById('p-name').value     = p.name     || '';
+          if(document.getElementById('p-title'))    document.getElementById('p-title').value    = p.title    || '';
+          if(document.getElementById('p-email'))    document.getElementById('p-email').value    = p.email    || '';
+          if(document.getElementById('p-phone'))    document.getElementById('p-phone').value    = p.phone    || '';
+          if(document.getElementById('p-location')) document.getElementById('p-location').value = p.location || '';
+          if(document.getElementById('p-linkedin')) document.getElementById('p-linkedin').value = p.linkedin || '';
+          if(document.getElementById('p-github'))   document.getElementById('p-github').value   = p.github   || '';
+          if(document.getElementById('p-desc'))     document.getElementById('p-desc').value     = p.bio      || '';
+        }
+        saveAll();
+        renderDashboard();
+        showToast('data.json imported successfully ✅','success');
+      } catch(err){
+        showToast('Invalid JSON file — please check the file and try again','error');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+
+/* ══════════════════════════════════
+   SUPABASE LOAD & INIT
+══════════════════════════════════ */
+const TABLE_MAP = {
+  projects:'projects', experience:'experience', blog:'blog',
+  certifications:'certifications', education:'education',
+  skills:'skills', kpis:'kpis'
+};
+
+async function loadFromSupabase(key){
+  if(!isConfigured()) return;
+  try{
+    const table = TABLE_MAP[key] || key;
+    const rows  = await sb.get(table);
+    // normalise kpis description field
+    if(key==='kpis') rows.forEach(r=>{ r.desc = r.description || r.desc || ''; });
+    DATA[key] = rows;
+    save('adm_'+key, rows);
+  } catch(e){ console.warn('Could not load '+key+' from Supabase:', e.message); }
+}
+
+async function loadAllFromSupabase(){
+  if(!isConfigured()){
+    document.getElementById('config-banner').style.display='flex';
+    document.getElementById('supabase-banner').style.display='none';
+    return;
+  }
+  showToast('Connecting to Supabase...', 'success');
+  const keys = Object.keys(TABLE_MAP);
+  await Promise.all(keys.map(k => loadFromSupabase(k)));
+  // Load profile
+  try{
+    const prof = await sb.get('profile');
+    if(prof && prof[0]){
+      const p = prof[0];
+      if(document.getElementById('p-name'))     document.getElementById('p-name').value     = p.name     || '';
+      if(document.getElementById('p-title'))    document.getElementById('p-title').value    = p.title    || '';
+      if(document.getElementById('p-email'))    document.getElementById('p-email').value    = p.email    || '';
+      if(document.getElementById('p-phone'))    document.getElementById('p-phone').value    = p.phone    || '';
+      if(document.getElementById('p-location')) document.getElementById('p-location').value = p.location || '';
+      if(document.getElementById('p-linkedin')) document.getElementById('p-linkedin').value = p.linkedin || '';
+      if(document.getElementById('p-github'))   document.getElementById('p-github').value   = p.github   || '';
+      if(document.getElementById('p-desc'))     document.getElementById('p-desc').value     = p.bio      || '';
+    }
+  } catch(e){}
+  document.getElementById('supabase-banner').style.display='flex';
+  document.getElementById('config-banner').style.display='none';
+  const el = document.getElementById('sb-status');
+  if(el) el.textContent = '✅ Connected';
+  showToast('Connected to Supabase ✅','success');
+}
+
+async function checkConnection(){
+  const btn = document.getElementById('btn-ping');
+  if(btn){ btn.textContent='Testing...'; btn.disabled=true; }
+  try{
+    await sb.get('profile');
+    showToast('✅ Supabase connection working!','success');
+    document.getElementById('sb-status').textContent = '✅ Connected';
+  } catch(e){
+    showToast('❌ Connection failed: '+e.message,'error');
+    document.getElementById('sb-status').textContent = '❌ Disconnected';
+  } finally {
+    if(btn){ btn.textContent='🔌 Test Connection'; btn.disabled=false; }
+  }
+}
+
+// Add hidden id fields to each modal for Supabase record IDs
+function addIdFields(){
+  const fields = [
+    {modal:'modal-project',   id:'proj-edit-id'},
+    {modal:'modal-experience',id:'exp-edit-id'},
+    {modal:'modal-blog',      id:'blog-edit-id'},
+    {modal:'modal-cert',      id:'cert-edit-id'},
+    {modal:'modal-education', id:'edu-edit-id'},
+    {modal:'modal-skill',     id:'skill-edit-id'},
+  ];
+  fields.forEach(f=>{
+    if(!document.getElementById(f.id)){
+      const inp = document.createElement('input');
+      inp.type='hidden'; inp.id=f.id; inp.value='';
+      document.getElementById(f.modal)?.appendChild(inp);
+    }
+  });
+}
+
+// Patch editItem to store Supabase row id
+const _origEditItem = editItem;
+function editItem(type, idx){
+  _origEditItem(type, idx);
+  // Store the Supabase row id
+  const idMap = {
+    project:'proj-edit-id', experience:'exp-edit-id',
+    blog:'blog-edit-id', cert:'cert-edit-id',
+    education:'edu-edit-id', skill:'skill-edit-id'
+  };
+  const dataMap = {
+    project:'projects', experience:'experience', blog:'blog',
+    cert:'certifications', education:'education', skill:'skills'
+  };
+  const fieldId  = idMap[type];
+  const dataKey  = dataMap[type];
+  if(fieldId && dataKey && DATA[dataKey] && DATA[dataKey][idx]){
+    const el = document.getElementById(fieldId);
+    if(el) el.value = DATA[dataKey][idx].id || '';
+  }
+}
+
+</script>
+</body>
+</html>
