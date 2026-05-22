@@ -734,9 +734,8 @@ function showPage(id){
 /* ══════════════════════════════════
    SUPABASE CONFIG — must match admin.html
 ══════════════════════════════════ */
-const SUPABASE_URL = "https://fybwtvthzxhrtsexzqqk.supabase.co"
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ5Ynd0dnRoenhocnRzZXh6cXFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg3NTQwMzYsImV4cCI6MjA5NDMzMDAzNn0.aHsJQEQ9XscdxOGu2lYpSOT6YBjpn8fwnSzi_EstEh4';
-
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
 
 async function sbGet(table, opts=''){
   const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?order=sort_order.asc${opts}`,{

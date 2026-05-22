@@ -1,0 +1,318 @@
+{
+  "profile": {
+    "name": "Bilali Saley Inusah",
+    "title": "Data & Financial Analyst · ICAG Associate",
+    "email": "bilali.inusah1@gmail.com",
+    "phone": "+233 24 204 3413",
+    "location": "Accra, Ghana",
+    "linkedin": "https://linkedin.com/in/bilali-saley-inusah",
+    "github": "https://github.com/BilaliSaleyInusah",
+    "cv": "https://linkedin.com/in/bilali-saley-inusah",
+    "bio": "First-Class BCom (Accounting) graduate combining accounting rigour with modern data skills — building dashboards, automating workflows, and surfacing insights that drive real decisions.",
+    "available": true
+  },
+  "kpis": [
+    {
+      "emoji": "🌱",
+      "num": "2,000+",
+      "label": "Farm Records Managed",
+      "desc": "Compiled & verified across 26 societies for fair bonus disbursement",
+      "img": ""
+    },
+    {
+      "emoji": "💼",
+      "num": "2+ yrs",
+      "label": "Analyst Experience",
+      "desc": "Freelance · Internship · National Service · Volunteer across agribusiness & finance",
+      "img": ""
+    },
+    {
+      "emoji": "⚡",
+      "num": "50%",
+      "label": "Reporting Time Reduced",
+      "desc": "Automated cocoa delivery & child labour tracking workflows",
+      "img": ""
+    },
+    {
+      "emoji": "🛠️",
+      "num": "10+",
+      "label": "Tools & Technologies",
+      "desc": "SQL · Power BI · Python · Excel · QGIS · KoboCollect · DAX · Git · AppSheet",
+      "img": ""
+    }
+  ],
+  "projects": [
+    {
+      "tag": "POWER BI",
+      "title": "Revenue Tracking Dashboard",
+      "period": "2024 · Tony's Open Chain Ghana",
+      "summary": "Interactive Power BI dashboard for profitability analysis and real-time KPI monitoring across product lines.",
+      "problem": "Decision-makers lacked a unified view of revenue performance across product categories, making it difficult to identify underperforming segments.",
+      "approach": "Built a multi-page Power BI report using DAX measures for dynamic KPIs, a star-schema data model connecting sales, product, and date tables, and interactive slicers enabling drill-down by region, product, and time period.",
+      "learning": "Designing for non-technical stakeholders means prioritising clarity over complexity — one well-placed KPI card communicates more than a dense table of numbers.",
+      "tech": ["Power BI", "DAX", "Data Modelling", "ETL"],
+      "outcomes": [],
+      "gh": "https://github.com/BilaliSaleyInusah",
+      "li": "https://linkedin.com/in/bilali-saley-inusah",
+      "img": ""
+    },
+    {
+      "tag": "POWER BI",
+      "title": "Hotel Booking Analytics",
+      "period": "2024 · FestMan Data Accelerator",
+      "summary": "Hospitality dashboard visualising booking trends, occupancy rates, and revenue — driving pricing optimisation decisions.",
+      "problem": "A hotel business had raw booking data but no visibility into trends — management couldn't identify seasonal patterns, peak periods, or underperforming room categories.",
+      "approach": "Connected booking data to Power BI, built time-intelligence DAX measures for month-over-month comparisons, and created an occupancy heatmap alongside a revenue waterfall chart.",
+      "learning": "Time intelligence in DAX is deceptively powerful. DATESINPERIOD and SAMEPERIODLASTYEAR unlock patterns that raw data completely hides.",
+      "tech": ["Power BI", "DAX", "ETL", "Time Series"],
+      "outcomes": [],
+      "gh": "https://github.com/BilaliSaleyInusah",
+      "li": "https://linkedin.com/in/bilali-saley-inusah",
+      "img": ""
+    },
+    {
+      "tag": "PYTHON · EXCEL",
+      "title": "Stock Performance Analysis",
+      "period": "2024 · Personal Project",
+      "summary": "Amazon & Facebook vs. S&P 500 using Sharpe ratio, beta, and standard deviation for actionable investment insights.",
+      "problem": "Raw return figures alone don't tell the full story. The goal was to evaluate whether higher returns from tech stocks were justified given the additional risk.",
+      "approach": "Used Python (Pandas, Matplotlib, NumPy) to pull and clean historical price data, then computed Sharpe ratios, beta coefficients, and annualised standard deviation.",
+      "learning": "Beta reveals how much market risk you're actually carrying. Higher return doesn't always mean better investment.",
+      "tech": ["Python", "Pandas", "Matplotlib", "NumPy", "Excel"],
+      "outcomes": [
+        {"num": "3", "desc": "Assets Compared"},
+        {"num": "5yr", "desc": "Historical Period"},
+        {"num": "Sharpe", "desc": "Primary Metric"}
+      ],
+      "gh": "https://github.com/BilaliSaleyInusah",
+      "li": "https://linkedin.com/in/bilali-saley-inusah",
+      "img": ""
+    },
+    {
+      "tag": "SQL",
+      "title": "Business Metrics Analysis",
+      "period": "2024 · FestMan Data Accelerator",
+      "summary": "SQL analysis answering key questions on customer behaviour, product performance, and revenue drivers.",
+      "problem": "The business had transactional data across multiple tables but no structured analysis to answer basic performance questions.",
+      "approach": "Wrote complex SQL queries using JOINs, CTEs, window functions (RANK, ROW_NUMBER, LAG), and aggregate functions to answer each business question.",
+      "learning": "Window functions transform SQL from a retrieval tool into a genuine analytical engine.",
+      "tech": ["SQL", "PostgreSQL", "CTEs", "Window Functions"],
+      "outcomes": [],
+      "gh": "https://github.com/BilaliSaleyInusah",
+      "li": "https://linkedin.com/in/bilali-saley-inusah",
+      "img": ""
+    },
+    {
+      "tag": "QGIS · GEOSPATIAL",
+      "title": "Farm Encroachment Detection",
+      "period": "Sep–Nov 2024 · Tony's Open Chain Ghana",
+      "summary": "Spatial analysis identifying 76 farms inside Ghana's protected forest reserves — informing certification decisions.",
+      "problem": "Sustainability certification requires all certified farms to operate within legal land boundaries. Manual verification was infeasible at scale.",
+      "approach": "Loaded GPS coordinates as point layers in QGIS and overlaid them against official forest reserve boundary shapefiles. Ran spatial intersection queries to flag farms inside protected zones.",
+      "learning": "Always verify CRS alignment before any spatial join — mismatched projections produce confident but wrong results.",
+      "tech": ["QGIS", "Geospatial Analysis", "GIS Mapping", "GPS Data"],
+      "outcomes": [
+        {"num": "76", "desc": "Encroaching Farms"},
+        {"num": "26", "desc": "Societies Covered"},
+        {"num": "100%", "desc": "Digital Process"}
+      ],
+      "gh": "https://github.com/BilaliSaleyInusah",
+      "li": "https://linkedin.com/in/bilali-saley-inusah",
+      "img": ""
+    },
+    {
+      "tag": "EXCEL · KOBOCOLLECT",
+      "title": "Child Labour Risk Dashboard",
+      "period": "Sep–Nov 2024 · Tony's Open Chain Ghana",
+      "summary": "Risk indicator dashboard enabling interventions that helped 56 children leave hazardous work and return to school.",
+      "problem": "Programme officers needed a clear picture of which communities had the highest concentrations of at-risk children.",
+      "approach": "Designed KoboCollect survey forms, built an Excel-based cleaning pipeline, then created a dashboard with colour-coded risk maps reviewed weekly with programme management.",
+      "learning": "Data quality depends entirely on the field form design. Design for the analyst, not just the enumerator.",
+      "tech": ["Excel", "KoboCollect", "Data Visualisation", "Survey Design"],
+      "outcomes": [
+        {"num": "56", "desc": "Children Protected"},
+        {"num": "26", "desc": "Societies Monitored"},
+        {"num": "Weekly", "desc": "Reporting Cadence"}
+      ],
+      "gh": "https://github.com/BilaliSaleyInusah",
+      "li": "https://linkedin.com/in/bilali-saley-inusah",
+      "img": ""
+    },
+    {
+      "tag": "EXCEL · AUTOMATION",
+      "title": "Farmer Delivery Tracking System",
+      "period": "Sep 2025–Present · Tony's Open Chain Ghana",
+      "summary": "Automated tools for 26 cocoa cooperatives tracking deliveries vs. expected volumes — cutting reporting time by 30%.",
+      "problem": "Union managers were manually reconciling delivery records from multiple sources, creating delays and errors in bonus disbursement.",
+      "approach": "Built structured Excel templates with dropdown validation, automated row formatting, and pivot-based summary sheets with data integrity checks.",
+      "learning": "A well-designed Excel template eliminates hours of manual work for teams with no coding background.",
+      "tech": ["Excel VBA", "Data Validation", "Pivot Tables", "Automation"],
+      "outcomes": [
+        {"num": "30%", "desc": "Time Saved"},
+        {"num": "1,800+", "desc": "Farmer Records"},
+        {"num": "26", "desc": "Cooperatives"}
+      ],
+      "gh": "https://github.com/BilaliSaleyInusah",
+      "li": "https://linkedin.com/in/bilali-saley-inusah",
+      "img": ""
+    },
+    {
+      "tag": "POWER BI · FIELD ANALYTICS",
+      "title": "Productivity Department Dashboard",
+      "period": "Sep 2025–Present · Tony's Open Chain Ghana",
+      "summary": "Multi-page dashboard tracking field activities and farm performance across 26 farming communities.",
+      "problem": "The Productivity team tracked activities through disconnected spreadsheets, making it impossible to get a quick overview of programme reach.",
+      "approach": "Consolidated data from multiple field sources into a Power BI model with pages for field officer activity, farm performance, trend analysis, and target vs. actual comparisons.",
+      "learning": "Timeliness beats perfection. A weekly-refreshed dashboard at 90% is infinitely more valuable than a perfect monthly report.",
+      "tech": ["Power BI", "DAX", "Field Analytics", "Agriculture Data"],
+      "outcomes": [
+        {"num": "26", "desc": "Communities Tracked"},
+        {"num": "Weekly", "desc": "Refresh Cadence"},
+        {"num": "Multi-page", "desc": "Dashboard"}
+      ],
+      "gh": "https://github.com/BilaliSaleyInusah",
+      "li": "https://linkedin.com/in/bilali-saley-inusah",
+      "img": ""
+    }
+  ],
+  "experience": [
+    {
+      "role": "Data Analyst — National Service",
+      "org": "Tony's Open Chain Ghana",
+      "period": "Sep 2025 – Present",
+      "type": "national-service",
+      "bullets": [
+        "Analytics dashboard for Productivity Dept. tracking field activities & farm performance",
+        "Excel tools for cocoa unions tracking farmer deliveries vs. expected volumes",
+        "KoboCollect systems for farm, household & child labour field data capture"
+      ]
+    },
+    {
+      "role": "Data Analytics & Engineering Track Coach",
+      "org": "GearUp Africa",
+      "period": "2025 – Present",
+      "type": "volunteer",
+      "bullets": [
+        "Mentor aspiring data professionals from Ghanaian universities in SQL, Power BI & Python",
+        "One-on-one coaching and bi-weekly group sessions on real portfolio projects",
+        "Contributing to West Africa's data talent pipeline"
+      ]
+    },
+    {
+      "role": "Data Analyst Intern",
+      "org": "Tony's Open Chain Ghana",
+      "period": "Sep 2024 – Nov 2024",
+      "type": "internship",
+      "bullets": [
+        "Compiled register of 1,800 farmers across 26 societies for equitable bonus disbursement",
+        "Child labour risk dashboard — 56 children helped out of hazardous farm work",
+        "QGIS geospatial analysis detecting 76 farms encroaching on protected forest reserves"
+      ]
+    },
+    {
+      "role": "Banking Intern",
+      "org": "First National Bank Ghana Ltd",
+      "period": "Sep 2023 – Nov 2023",
+      "type": "internship",
+      "bullets": [
+        "Resolved 10+ customer inquiries daily, improving online banking adoption",
+        "Assisted 15 clients daily with fund transfers, ATM & USSD banking"
+      ]
+    }
+  ],
+  "blog": [
+    {
+      "title": "5 Power BI DAX Formulas Every Analyst Should Know",
+      "cat": "tips",
+      "date": "April 2025",
+      "emoji": "📊",
+      "img": "",
+      "preview": "From CALCULATE to RANKX — the DAX functions that unlock your dashboards.",
+      "content": "## Why DAX Matters\nPower BI is only as powerful as the formulas driving it.\n\n## 1. CALCULATE\nModifies the filter context — foundation of every complex measure.\n\n## 2. RANKX\nDynamic rankings that update as users filter.\n\n## 3. DIVIDE\nSafe division that handles zero denominators gracefully.\n\n## 4. DATESINPERIOD\nRolling time calculations without hardcoding dates.\n\n## 5. SWITCH(TRUE())\nReplaces messy nested IF statements elegantly."
+    },
+    {
+      "title": "How Data Helped 56 Children Return to School in Ghana",
+      "cat": "stories",
+      "date": "March 2025",
+      "emoji": "🌍",
+      "img": "",
+      "preview": "How Excel and KoboCollect became tools for social impact in cocoa communities.",
+      "content": "## The Problem\nChild labour in Ghana's cocoa farming communities is a persistent challenge.\n\n## The Data Solution\nDashboard visualising child labour risk indicators across farming societies.\n\n## The Outcome\n56 children returned to school after targeted data-driven interventions.\n\n## What This Taught Me\nBehind every row in a dataset is a person, a family, a community."
+    },
+    {
+      "title": "From Accounting Student to Data Analyst: My Transition Story",
+      "cat": "career",
+      "date": "November 2024",
+      "emoji": "🎯",
+      "img": "",
+      "preview": "How a First-Class accounting degree became the foundation for a data career.",
+      "content": "## Why Accounting First?\nTo understand how businesses actually work.\n\n## The Data Pivot\nFestMan Data Accelerator — 8-week intensive in Power BI, SQL, and Excel.\n\n## How Accounting Made Me Better\nI understand financial statements and cost structures natively.\n\n## Key Advice\nDomain expertise is an asset. Build projects on real, messy data."
+    }
+  ],
+  "certifications": [
+    {
+      "name": "SQL Associate Certificate",
+      "issuer": "DataCamp · Mar 2025",
+      "url": "https://www.datacamp.com/certificate/SQA0011671801007",
+      "type": "cert"
+    },
+    {
+      "name": "Investment Foundations®",
+      "issuer": "CFA Institute · Oct 2024",
+      "url": "https://credentials.cfainstitute.org/5129aee0-49e3-40fa-a795-4fabc2a9bd51#acc.DYezIiBg",
+      "type": "cert"
+    },
+    {
+      "name": "Enterprise Design Thinking Practitioner",
+      "issuer": "IBM · Nov 2024",
+      "url": "https://www.credly.com/badges/aacb1fff-b4f8-42e8-9fec-491cb422eac2",
+      "type": "cert"
+    },
+    {
+      "name": "Python (Basic) Certificate",
+      "issuer": "HackerRank · May 2023",
+      "url": "https://www.hackerrank.com/certificates/iframe/7d220fac7414",
+      "type": "cert"
+    },
+    {
+      "name": "Dean's Award for Outstanding Academic Performance — 3 Consecutive Years",
+      "issuer": "University of Cape Coast · 2022, 2023, 2024",
+      "url": "",
+      "type": "award"
+    }
+  ],
+  "education": [
+    {
+      "degree": "BCom Accounting — First Class Honours",
+      "institution": "University of Cape Coast",
+      "period": "2022 – 2025",
+      "details": "Financial Reporting · Statistics · Business Law · IT Skills"
+    },
+    {
+      "degree": "Associate Member (ICAG)",
+      "institution": "Institute of Chartered Accountants, Ghana",
+      "period": "Apr 2025 – Nov 2025",
+      "details": "Financial Management · Corporate Reporting · Advanced Taxation · Strategic Case Study"
+    },
+    {
+      "degree": "Data Analysis Intensive",
+      "institution": "FestMan Data Accelerator Program",
+      "period": "Nov 2024 – Jan 2025",
+      "details": "SQL · Power BI · Excel · AI Applications · BI Case Studies"
+    }
+  ],
+  "skills": [
+    {"name": "Power BI", "cat": "data", "pct": 88},
+    {"name": "SQL", "cat": "data", "pct": 85},
+    {"name": "Excel Dashboards", "cat": "data", "pct": 92},
+    {"name": "QGIS (Geospatial)", "cat": "data", "pct": 76},
+    {"name": "Python (Pandas, Matplotlib)", "cat": "programming", "pct": 78},
+    {"name": "Excel VBA / Automation", "cat": "programming", "pct": 82},
+    {"name": "KoboCollect Systems", "cat": "programming", "pct": 84},
+    {"name": "Git / Version Control", "cat": "programming", "pct": 70},
+    {"name": "Financial Reporting (ICAG)", "cat": "finance", "pct": 93},
+    {"name": "Budgeting & Forecasting", "cat": "finance", "pct": 86},
+    {"name": "Management Accounting", "cat": "finance", "pct": 88},
+    {"name": "Investment Analysis (CFA)", "cat": "finance", "pct": 80}
+  ]
+}
